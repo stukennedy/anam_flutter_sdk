@@ -1,0 +1,16 @@
+enum AnamEvent {
+  messageHistoryUpdated,
+  connectionEstablished,
+  connectionClosed,
+  videoStreamStarted,
+  audioStreamStarted,
+  sessionReady,
+  personaTalking,
+  personaListening,
+  error,
+  iceConnectionStateChanged,
+  signalingStateChanged,
+  dataChannelMessage,
+  inputAudioEnabled,
+  inputAudioDisabled,
+}
