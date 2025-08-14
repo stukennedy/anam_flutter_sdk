@@ -11,6 +11,7 @@ class StreamingClient {
   final EventEmitter eventEmitter;
   final Logger _logger;
   final List<Map<String, dynamic>>? iceServers;
+  final bool disableClientAudio;
   
   RTCPeerConnection? _peerConnection;
   RTCDataChannel? _dataChannel;
@@ -23,6 +24,7 @@ class StreamingClient {
   StreamingClient({
     required this.eventEmitter,
     this.iceServers,
+    this.disableClientAudio = false,
     Logger? logger,
   }) : _logger = logger ?? Logger();
 
@@ -138,11 +140,16 @@ class StreamingClient {
       );
       _logger.d('📹 Added video transceiver (recvonly)');
       
+      // Audio transceiver direction depends on whether client audio is enabled
+      final audioDirection = disableClientAudio 
+        ? TransceiverDirection.RecvOnly 
+        : TransceiverDirection.SendRecv;
+      
       await _peerConnection!.addTransceiver(
         kind: RTCRtpMediaType.RTCRtpMediaTypeAudio,
-        init: RTCRtpTransceiverInit(direction: TransceiverDirection.SendRecv),
+        init: RTCRtpTransceiverInit(direction: audioDirection),
       );
-      _logger.d('🔊 Added audio transceiver (sendrecv)');
+      _logger.d('🔊 Added audio transceiver (${disableClientAudio ? "recvonly" : "sendrecv"})');
       
     } catch (e) {
       _logger.e('Failed to initialize peer connection', error: e);
@@ -153,6 +160,11 @@ class StreamingClient {
   }
 
   Future<void> _setupLocalStream() async {
+    if (disableClientAudio) {
+      _logger.d('Client audio disabled - skipping local stream setup');
+      return;
+    }
+    
     try {
       final mediaConstraints = {
         'audio': {

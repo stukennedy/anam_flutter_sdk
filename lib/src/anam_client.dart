@@ -99,6 +99,7 @@ class AnamClient {
         _streamingClient = StreamingClient(
           eventEmitter: _eventEmitter,
           logger: _logger,
+          disableClientAudio: options.disableClientAudio,
           iceServers: (clientConfig['iceServers'] as List<dynamic>?)
               ?.map((e) => e as Map<String, dynamic>)
               .toList(),
@@ -172,6 +173,7 @@ class AnamClient {
       _streamingClient = StreamingClient(
         eventEmitter: _eventEmitter,
         logger: _logger,
+        disableClientAudio: options.disableClientAudio,
         iceServers: (clientConfig['iceServers'] as List<dynamic>?)
             ?.map((e) => e as Map<String, dynamic>)
             .toList(),
@@ -398,11 +400,13 @@ class AnamClientFactory {
   static AnamClient createClient({
     required String sessionToken,
     bool enableLogging = false,
+    bool disableClientAudio = false,
   }) {
     return AnamClient(
       options: AnamClientOptions(
         sessionToken: sessionToken,
         enableLogging: enableLogging,
+        disableClientAudio: disableClientAudio,
       ),
     );
   }
@@ -412,6 +416,7 @@ class AnamClientFactory {
   /// before we have a session token
   static Future<Map<String, dynamic>> createWebRTCOffer({
     List<Map<String, dynamic>>? iceServers,
+    bool disableClientAudio = false,
     Logger? logger,
   }) async {
     final tempLogger = logger ?? Logger(level: Level.warning);
@@ -421,6 +426,7 @@ class AnamClientFactory {
     final tempClient = StreamingClient(
       eventEmitter: tempEventEmitter,
       logger: tempLogger,
+      disableClientAudio: disableClientAudio,
       iceServers: iceServers,
     );
     

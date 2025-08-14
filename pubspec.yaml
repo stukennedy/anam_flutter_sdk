@@ -1,6 +1,6 @@
 name: anam_flutter_sdk
 description: "Flutter SDK for Anam AI realtime Avatar system"
-version: 0.0.1
+version: 0.1.0
 homepage: https://github.com/stukennedy/anam_flutter_sdk
 repository: https://github.com/stukennedy/anam_flutter_sdk
 issue_tracker: https://github.com/stukennedy/anam_flutter_sdk/issues

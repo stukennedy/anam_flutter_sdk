@@ -95,3 +95,28 @@ The Anam Flutter SDK is a Flutter package that enables real-time avatar communic
 - `jwt_decoder`: For session token validation
 - `uuid`: Message ID generation
 - `logger`: Structured logging
+
+### Custom Audio Handling
+
+The SDK now supports disabling client audio capture through the `disableClientAudio` option:
+
+```dart
+// Create client without microphone access
+final client = AnamClientFactory.createClient(
+  sessionToken: sessionToken,
+  disableClientAudio: true, // Disables mic access
+);
+```
+
+When `disableClientAudio: true`:
+- No microphone permission is requested
+- No local audio stream is created
+- Audio transceiver is set to `recvonly` (receive only)
+- Allows implementing custom transcription and turn-taking logic
+- Data channel remains available for sending custom messages
+
+This is useful when you want to:
+- Handle transcription yourself (e.g., using device speech recognition)
+- Implement custom interruption logic
+- Control turn-taking behavior
+- Use alternative audio input methods

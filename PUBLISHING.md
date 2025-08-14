@@ -76,7 +76,7 @@ In your other Flutter project's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  anam_flutter_sdk: ^0.0.1
+  anam_flutter_sdk: ^0.1.0
 ```
 
 ### 3.2 Get Dependencies

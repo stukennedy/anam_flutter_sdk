@@ -17,7 +17,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  anam_flutter_sdk: ^0.0.1
+  anam_flutter_sdk: ^0.1.0
 ```
 
 ## Platform Setup
@@ -82,6 +82,12 @@ final client = AnamClientFactory.unsafeCreateClientWithApiKey(
 // Or create client with session token (recommended for production)
 final client = AnamClientFactory.createClient(
   sessionToken: 'your-session-token',
+);
+
+// Create client with custom audio disabled (for custom transcription)
+final client = AnamClientFactory.createClient(
+  sessionToken: 'your-session-token',
+  disableClientAudio: true, // No microphone access, receive-only audio
 );
 
 // Configure persona
@@ -172,6 +178,32 @@ cd example
 flutter pub get
 flutter run
 ```
+
+## Custom Audio Handling
+
+The SDK supports disabling client audio capture for custom transcription and turn-taking implementations:
+
+```dart
+// Disable client audio - no microphone access
+final client = AnamClientFactory.createClient(
+  sessionToken: sessionToken,
+  disableClientAudio: true,
+);
+```
+
+When `disableClientAudio: true`:
+- No microphone permission is requested
+- Audio transceiver is set to `recvonly` (receive only)
+- You can implement your own speech recognition
+- Data channel remains available for sending messages
+- Perfect for custom interruption and turn-taking logic
+
+This is useful for:
+- Using device native speech recognition
+- Implementing custom VAD (Voice Activity Detection)
+- Creating your own interruption handling
+- Building accessibility features
+- Privacy-focused applications
 
 ## API Reference
 
